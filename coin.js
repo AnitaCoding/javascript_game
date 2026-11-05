@@ -4,4 +4,9 @@ function Coin(initialPosition) {
     this.wobble = Math.PI*2*Math.random()
 }
 
+
 Coin.prototype.type = 'coin'
+
+Coin.prototype.act = function(step){
+    
+}

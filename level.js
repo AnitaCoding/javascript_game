@@ -1,17 +1,21 @@
 const ACTORS = {
     //Guardamos referencia al constructor
     'o': Coin,
-    '@': Player
+    '@': Player,
+    '=': Lava,
+    '|': Lava, 
+    'v': Lava
 };
+const MAX_STEP = 0.05
 
 function Level(plan){
+    if (!validateLevel(plan)) throw new Error('You need a player and a coin')
     this.width = plan[0].length;
     this.height = plan.length;
     this.state = null
     this.finishDelay = null
     this.grid = [];
     this.actors = [];
-
 
     for (let y = 0; y < this.height; y++){
         let line = plan[y];
@@ -33,8 +37,25 @@ function Level(plan){
 
         this.grid.push(gridLine)
     }
+
+    this.actor = this.actors.filter(actor => actor == 'player')[0]
 }
 
 Level.prototype.isFinished = function (){
     return (this.status !== null && this.finishDelay < 0)
+}
+
+Level.prototype.animate = function(step, keys){
+    if( this.status !== null) this.finishDelay -= step;
+
+    while( step > 0){
+        let thisStep = Math.min(step, MAX_STEP);
+        this.actors.forEach(actor => actor.act(thisStep, this, keys))
+        step -= thisStep
+    }
+}
+
+function validateLevel(level){
+    return (level.some(row => row.indexOf('@') !== -1) && (row => row.indexOf('o') !== -1))
+
 }
