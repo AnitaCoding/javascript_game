@@ -1,3 +1,5 @@
+const WOBBLE_SPEED = 10
+const WOBBLE_DISTANCE =0.1
 function Coin(initialPosition) {
     this.basePosition = this.pos = initialPosition.plus(new Vector(0.2, 0.1))
     this.size = new Vector(0.6, 0.6);
@@ -8,5 +10,7 @@ function Coin(initialPosition) {
 Coin.prototype.type = 'coin'
 
 Coin.prototype.act = function(step){
-    
+    this.wobble += step * WOBBLE_SPEED;
+    let wobblePosition = Math.sin(this.wobble) *WOBBLE_DISTANCE;
+    this.pos = this.basePosition.plus(new Vector(0, wobblePosition))
 }

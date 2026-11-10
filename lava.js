@@ -11,5 +11,9 @@ function Lava(initialPosition, characterType){
 
 Lava.prototype.type = 'lava'
 Lava.prototype.act = function(step, level){
+    let newPosition = this.pos.plus(this.speed.times(step))
+    if(!level.obstacleAt(newPosition, this.size)) this.pos = newPosition;
+    else if(this.respawnPosition) this.pos = this.respawnPosition
+    else this.speed = this.speed.times(-1);
     
 }
